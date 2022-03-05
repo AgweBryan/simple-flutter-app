@@ -1,27 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yisafa/main.dart';
 
-class CounterScreen extends ConsumerWidget {
-  const CounterScreen({Key? key}) : super(key: key);
+class CounterScreen extends StatelessWidget {
+  final int? count;
+  final Function? increment;
+  CounterScreen({this.count, this.increment});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final count = ref.watch(counterProvider.state).state;
-    return Scaffold(
-      body: Center(
-        child: Text(
-          'You have clicked the button $count times.',
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: Stack(
+            children: [
+              Center(
+                child: Text(
+                  'You have clicked the button $count times',
+                ),
+              ),
+              Positioned(
+                bottom: 10,
+                right: 10,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    increment!();
+                  },
+                  child: Icon(
+                    Icons.add,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-        ),
-        onPressed: () {
-          ref.read(counterProvider.state).state++;
-        },
-      ),
+      ],
     );
   }
 }

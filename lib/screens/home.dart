@@ -12,12 +12,15 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
+  int count = 0;
+  Color screenColor = Colors.brown.shade200;
+  int screenCount = 0;
+  int appBarCount = 0;
+  int bottomBarCount = 0;
+  Color bottomNavbarColor = Colors.white;
+  Color appBarColor = Colors.blue;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    CounterScreen(),
-    ButtonChangeScreenColor(),
-    ChangeNavBarColor()
-  ];
+  List<Color> screenColorList = [Colors.amber, Colors.yellow, Colors.orange];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -28,6 +31,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: screenColor,
       drawer: Drawer(
         backgroundColor: Colors.brown.shade100,
         child: Column(
@@ -38,12 +42,66 @@ class _HomeState extends State<Home> {
         ),
       ),
       appBar: AppBar(
+        backgroundColor: appBarColor,
         title: Text(
           'Home Page',
         ),
       ),
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: [
+        CounterScreen(
+            count: count,
+            increment: () {
+              setState(() {
+                count++;
+              });
+            }),
+        ButtonChangeScreenColor(
+          changeScreenColor: () {
+            if (screenCount == 2) {
+              setState(() {
+                screenColor = screenColorList[screenCount];
+                screenCount = 0;
+              });
+            } else {
+              setState(() {
+                screenColor = screenColorList[screenCount];
+                screenCount++;
+              });
+            }
+          },
+        ),
+        ChangeNavBarColor(
+          changeAppBarColor: () {
+            if (appBarCount == 2) {
+              setState(() {
+                appBarColor = screenColorList[appBarCount];
+                appBarCount = 0;
+              });
+            } else {
+              setState(() {
+                appBarColor = screenColorList[appBarCount];
+                appBarCount++;
+              });
+            }
+          },
+          changeBottomBarColor: () {
+            if (bottomBarCount == 2) {
+              setState(() {
+                bottomNavbarColor = screenColorList[bottomBarCount];
+                bottomBarCount = 0;
+              });
+            } else {
+              setState(() {
+                bottomBarCount++;
+                bottomNavbarColor = screenColorList[bottomBarCount];
+                bottomBarCount++;
+              });
+            }
+          },
+        ),
+      ][_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: bottomNavbarColor,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
